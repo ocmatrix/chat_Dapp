@@ -5,19 +5,28 @@ import react from '@vitejs/plugin-react'
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
   return {
-    // CRITICAL: Base must be './' for IPFS relative paths to work
-    base: './',
+    base: './', // Crucial for IPFS
     build: {
       outDir: 'dist',
       emptyOutDir: true,
-      sourcemap: false
+      sourcemap: false,
+      chunkSizeWarningLimit: 1000,
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            vendor: ['react', 'react-dom', 'ethers', 'peerjs'],
+            ui: ['@google/genai']
+          }
+        }
+      }
     },
     plugins: [react()],
     define: {
-      // Polyfill for some web3 libraries that might expect global
       global: 'window',
-      // Inject API Key safely during build
-      'process.env.API_KEY': JSON.stringify(env.API_KEY || process.env.API_KEY)
+      // Safe injection of API Key
+      'process.env.API_KEY': JSON.stringify(env.API_KEY || process.env.API_KEY),
+      // Prevent crash if some lib accesses process.env directly
+      'process.env': {} 
     }
   }
 })

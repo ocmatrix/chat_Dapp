@@ -1,0 +1,8 @@
+{
+  "name": "DeChat",
+  "description": "Decentralized, Serverless, End-to-End Encrypted Chat & Video calling running directly in your wallet.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ]
+}

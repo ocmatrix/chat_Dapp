@@ -7,6 +7,11 @@ export default defineConfig(({ mode }) => {
   return {
     // CRITICAL: Base must be './' for IPFS relative paths to work
     base: './',
+    build: {
+      outDir: 'dist',
+      emptyOutDir: true,
+      sourcemap: false
+    },
     plugins: [react()],
     define: {
       // Polyfill for some web3 libraries that might expect global
